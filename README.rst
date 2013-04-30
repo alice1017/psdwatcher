@@ -1,3 +1,5 @@
+.. image:: https://raw.github.com/alice1017/psdwatcher/master/psdwatcher_logo.jpg
+
 What is psdwatch
 ##################
 
