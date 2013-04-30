@@ -47,6 +47,26 @@ def is_in_gitrepo():
     else:
         return False
 
+class GitError(BaseException): pass
+
+def git(cmd, *args, **kwargs):
+    input=None
+
+    if "input" in kwargs:
+        input = kwargs["input"]
+    else:
+        input = ""
+
+    proc = Popen(
+        ("git", cmd) + args, stdin=PIPE, stdout=PIPE, stderr=PIPE)
+    out, err = proc.communicate(input)
+
+    if len(err) == 0:
+        return out[:-1]
+    else:
+        raise GitError(err)
+
+
 
 def add_file(namespace):
     file_name = namespace.psd_file.split("/")[-1]
@@ -138,7 +158,17 @@ def start_watch(namespace):
                 # write log
                 print termcolor.colored("Catch the '%s' file's change!" % file_name, "yellow")
                 print "timestamp : %s -> %s" % (old_timestamp, now_timestamp)
-                return
+
+                # git staging
+                print "Staging using git...",
+                git("add", file_name)
+                print termcolor.colored("done", "blue")
+
+                # git commit
+                print "Commiting using git...",
+                commit_msg = "The file was changed. This commited by psdwatcher. Timestamp : %s -> %s" % (old_timestamp, now_timestamp)
+                git("commit", "-m", commit_msg)
+                print termcolor.colored("done", "blue")
 
             else:
                 # file not changed 
