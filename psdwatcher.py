@@ -82,6 +82,7 @@ def start_watch(namespace):
     counter = 0
     timestamp_register = {}
     binary_content = {}
+    watch_list_files_length = len(watch_list)
 
     print "Start watching........"
     while True:
@@ -108,7 +109,7 @@ def start_watch(namespace):
 
 
             # register original timestamp
-            if counter == 0 or counter == 1:
+            if counter <= watch_list_files_length:
                 if namespace.dev: print "Registring file's original timestamp: %s" % os.stat(file_path)[stat.ST_MTIME]
                 timestamp_register[file_name] = os.stat(file_path)[stat.ST_MTIME]
 
