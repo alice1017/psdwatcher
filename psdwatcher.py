@@ -24,6 +24,7 @@ cmd_add = subparsers.add_parser("add", help="Add PSD file at watch list.")
 cmd_add.add_argument("psd_file", action="store", help="The PSD file name.")
 
 cmd_watch = subparsers.add_parser("run", help="Start watching.")
+cmd_watch.add_argument("-o", action="store", dest="log_file", help="Write out log to other file.")
 cmd_watch.add_argument("--dev", action="store_true", dest="dev", help="Write out development log")
 
 cmd_list = subparsers.add_parser("list", help="Show the files that was contained watch-list")
@@ -58,7 +59,7 @@ def git(cmd, *args, **kwargs):
         input = ""
 
     proc = Popen(
-        ("git", cmd) + args, stdin=PIPE, stdout=PIPE, stderr=PIPE)
+        ("git", cmd) + args, stdin=-1, stdout=-1, stderr=-1)
     out, err = proc.communicate(input)
 
     if len(err) == 0:
@@ -99,14 +100,22 @@ def start_watch(namespace):
     else:
         raise IOError("%s file does not found." % WATCH_LIST_FILE)
 
+    if namespace.log_file and os.access(namespace.log_file, os.F_OK):
+        raise IOError("%s log file is already exist." % namespace.log_file)
+        
+
     counter = 0
     timestamp_register = {}
     binary_content = {}
     watch_list_files_length = len(watch_list)
 
     print "Start watching........"
+
+    if namespace.log_file:
+        sys.stdout = open(namespace.log_file, "w+")
+
     while True:
-        for file_name, file_dir, file_path in watch_list:
+                for file_name, file_dir, file_path in watch_list:
             if namespace.dev:
                 print "="*80
                 print "Now watching file : %s" % termcolor.colored(file_name, "red")
