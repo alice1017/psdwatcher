@@ -177,8 +177,6 @@ def watch_starter(namespace):
                 # move dir
                 if namespace.dev: log("Moving Directory to %s" % termcolor.colored(file_dir, "blue"))
                 os.chdir(file_dir)
-
-                
                 
                 # register original timestamp
                 if counter <= watch_list_files_length:
@@ -236,16 +234,8 @@ def watch_starter(namespace):
                         log("%s psd file's new binary content" % termcolor.colored("Updating", "yellow"))
                         binary_content[file_name] = open(file_name).read()
 
-                        counter += 1
-                        continue
+                time.sleep(0.01)
 
-                    else:
-                        counter += 1
-                        continue
-
-                else:
-                    counter += 1
-                continue
 
             except KeyboardInterrupt:
                 print "\n"
