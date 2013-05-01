@@ -38,8 +38,8 @@ psdwatcherはPSDファイルの変更を追うためのトリガーとしてrun�
 run [, [-o [LOG_FILE]], [--not-output-log], [--dev]]
     PSDファイルのウォッチングを始める。
 
-    :-o:    psdwatcherが出力したログをログファイルに書き出す。
-    :--dev: 開発者向けログレベルに設定
+    :-o:                psdwatcherが出力したログをログファイルに書き出す。
+    :--dev:             開発者向けログレベルに設定
     :--not-output-log: ログを出力しない
 
 Other Comamnd Usage
