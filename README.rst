@@ -32,6 +32,9 @@ add [PSD_FILE]
 
 PSDファイルを登録したら、あとはpsdwatcherを **run** するだけです。
 
+runコマンドを起動したら、さっそくphotoshopを開いてpsdwatcherに登録したpsdファイルを編集してください。
+psdwatcherがその編集を監視し、gitへステージング・コミットします。
+
 psdwatcherはPSDファイルの変更を追うためのトリガーとしてrunコマンドを使用しています。
 このトリガーは後々変更するかもしれません。
     
