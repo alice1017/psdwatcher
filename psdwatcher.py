@@ -230,10 +230,10 @@ def watch_starter(namespace):
                     log("done", color="blue")
 
                     # update registered content
-                    log("Updating file's new timestamp: %s" % now_timestamp)
+                    log("%s file's new timestamp: %s" % (termcolor.colored("Updating", "yellow"), termcolor.colored(now_timestamp, "blue")))
                     timestamp_register[file_name] = now_timestamp
 
-                    log("Updating psd file's new binary content")
+                    log("%s psd file's new binary content" % termcolor.colored("Updating", "yellow"))
                     binary_content[file_name] = open(file_name).read()
 
                     continue
