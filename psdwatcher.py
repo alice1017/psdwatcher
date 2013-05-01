@@ -159,7 +159,7 @@ def watch_starter(namespace):
 
     print "Start watching........"
 
-    while True:
+    while 1:
         for file_name, file_dir, file_path in watch_list:
             try:
                 if namespace.dev:
@@ -205,38 +205,42 @@ def watch_starter(namespace):
                     log("\tnew: %s" % os.stat(file_path)[stat.ST_MTIME])
 
 
-                # get the binary content
-                old_bincontent = binary_content[file_name]
-                now_bincontent = open(file_name).read()
 
-                if namespace.dev: log("Getting the psd file's binary content")
+                # if old_timestamp != now_timestamp and old_bincontent != now_bincontent:
+                if old_timestamp != now_timestamp:
+                    # get the binary content
+                    old_bincontent = binary_content[file_name]
+                    now_bincontent = open(file_name).read()
 
-                if old_timestamp != now_timestamp and old_bincontent != now_bincontent:
-                    # the file was overwritten
+                    if namespace.dev: log("Getting the psd file's binary content")
+                    
+                    # check whether psd file's binary content was changed
+                    if old_bincontent != now_bincontent:
+                        # the file was overwritten
 
-                    # write log
-                    log("Catch the '%s' file's change!" % file_name, color="yellow")
-                    log("timestamp : %s -> %s" % (old_timestamp, now_timestamp))
+                        # write log
+                        log("Catch the '%s' file's change!" % file_name, color="yellow")
+                        log("timestamp : %s -> %s" % (old_timestamp, now_timestamp))
 
-                    # git staging
-                    log("Staging using git...", conma=True)
-                    git("add", file_name)
-                    log("done", "blue")
+                        # git staging
+                        log("Staging using git...", conma=True)
+                        git("add", file_name)
+                        log("done", "blue")
 
-                    # git commit
-                    log("Commiting using git...", conma=True)
-                    commit_msg = "The '%s' file was changed. This commited by psdwatcher. Timestamp : %s -> %s" % (file_name, old_timestamp, now_timestamp)
-                    git("commit", "--author", "psdwatcher <https://github.com/alice1017/psdwatcher/>",  "-m", commit_msg)
-                    log("done", color="blue")
+                        # git commit
+                        log("Commiting using git...", conma=True)
+                        commit_msg = "The '%s' file was changed. This commited by psdwatcher. Timestamp : %s -> %s" % (file_name, old_timestamp, now_timestamp)
+                        git("commit", "--author", "psdwatcher <https://github.com/alice1017/psdwatcher/>",  "-m", commit_msg)
+                        log("done", color="blue")
 
-                    # update registered content
-                    log("%s file's new timestamp: %s" % (termcolor.colored("Updating", "yellow"), termcolor.colored(now_timestamp, "blue")))
-                    timestamp_register[file_name] = now_timestamp
+                        # update registered content
+                        log("%s file's new timestamp: %s" % (termcolor.colored("Updating", "yellow"), termcolor.colored(now_timestamp, "blue")))
+                        timestamp_register[file_name] = now_timestamp
 
-                    log("%s psd file's new binary content" % termcolor.colored("Updating", "yellow"))
-                    binary_content[file_name] = open(file_name).read()
+                        log("%s psd file's new binary content" % termcolor.colored("Updating", "yellow"))
+                        binary_content[file_name] = open(file_name).read()
 
-                    continue
+                        continue
 
                 counter += 1
 
