@@ -25,6 +25,7 @@ cmd_add.add_argument("psd_file", action="store", help="The PSD file name.")
 
 cmd_watch = subparsers.add_parser("run", help="Start watching.")
 cmd_watch.add_argument("-o", action="store", dest="log_file", help="Write out log to other file.")
+cmd_watch.add_argument("--no-output-log", action="store_true", dest="not_output", help="use this option, psdwatcher don't output log.")
 cmd_watch.add_argument("--dev", action="store_true", dest="dev", help="Write out development log")
 
 cmd_list = subparsers.add_parser("list", help="Show the files that was contained watch-list")
@@ -70,7 +71,7 @@ class Logger(object):
     def __init__(self, log_file=None, not_output=None):
         if log_file:
             if not os.access(log_file, os.F_OK):
-                self.logfile = open(log_save_file, "w+")
+                self.logfile = open(log_file, "w+")
             else:
                 raise IOError("%s log file is already exist." % log_file)
         else:
@@ -81,7 +82,7 @@ class Logger(object):
         else:
             self.not_output = False
 
-    def log(self, string, color=None):
+    def log(self, string, color=None, conma=None):
         log_content = ""
         
         if color:
@@ -95,7 +96,10 @@ class Logger(object):
         if self.not_output:
             return
         
-        print log_content
+        if conma:
+            print log_content,
+        else:
+            print log_content
 
         return 
 
@@ -142,6 +146,7 @@ def start_watch(namespace):
         logger_opts["not_output"] = namespace.not_output
     
     logger = Logger(**logger_opts)
+    log = logger.log
         
     counter = 0
     timestamp_register = {}
@@ -154,34 +159,32 @@ def start_watch(namespace):
         sys.stdout = open(namespace.log_file, "w+")
 
     while True:
-                for file_name, file_dir, file_path in watch_list:
+        for file_name, file_dir, file_path in watch_list:
             if namespace.dev:
-                print "="*80
-                print "Now watching file : %s" % termcolor.colored(file_name, "red")
+                log("="*80)
+                log("Now watching file : %s" % termcolor.colored(file_name, "red"))
             
             # move dir
-            if namespace.dev: print "Moving Directory to %s" % termcolor.colored(file_dir, "blue")
-
+            if namespace.dev: log("Moving Directory to %s" % termcolor.colored(file_dir, "blue"))
             os.chdir(file_dir)
-
 
             # check whether there is git repository
             if namespace.dev:
-                print "Checking wheter there is git repository... ",
+                log("Checking wheter there is git repository... ", conma=True)
 
             if not is_in_gitrepo():
-                if namespace.dev: print termcolor.colored("git repository does not found", "yellow")
+                if namespace.dev: log("repository does not found", color="yellow")
                 raise IOError("fatal: Not a git repository (or any of the parent directories): .git")
 
-            if namespace.dev: print termcolor.colored("git repository does found", "blue")
+            if namespace.dev: log("repository does found", color="blue")
 
 
             # register original timestamp
             if counter <= watch_list_files_length:
-                if namespace.dev: print "Registring file's original timestamp: %s" % os.stat(file_path)[stat.ST_MTIME]
+                if namespace.dev: log("Registring file's original timestamp: %s" % os.stat(file_path)[stat.ST_MTIME])
                 timestamp_register[file_name] = os.stat(file_path)[stat.ST_MTIME]
 
-                if namespace.dev: print "Registering psd file's binary content"
+                if namespace.dev: log("Registering psd file's binary content")
                 binary_content[file_name] = open(file_name).read()
 
                 counter += 1
@@ -191,32 +194,32 @@ def start_watch(namespace):
             old_timestamp = timestamp_register[file_name]
             now_timestamp = os.stat(file_path)[stat.ST_MTIME]
             if namespace.dev:
-                print "Taking a timestamp:"
-                print "\told: %s" % timestamp_register[file_name]
-                print "\tnew: %s" % os.stat(file_path)[stat.ST_MTIME]
+                log("Taking a timestamp:")
+                log("\told: %s" % timestamp_register[file_name])
+                log("\tnew: %s" % os.stat(file_path)[stat.ST_MTIME])
 
             # get the binary content
             old_bincontent = binary_content[file_name]
             now_bincontent = open(file_name).read()
-            if namespace.dev: print "Getting the psd file's binary content"
+            if namespace.dev: log("Getting the psd file's binary content")
 
             if old_timestamp != now_timestamp and old_bincontent != now_bincontent:
                 # the file was overwritten
 
                 # write log
-                print termcolor.colored("Catch the '%s' file's change!" % file_name, "yellow")
-                print "timestamp : %s -> %s" % (old_timestamp, now_timestamp)
+                log("Catch the '%s' file's change!" % file_name, color="yellow")
+                log("timestamp : %s -> %s" % (old_timestamp, now_timestamp))
 
                 # git staging
-                print "Staging using git...",
+                log("Staging using git...", conma=True)
                 git("add", file_name)
-                print termcolor.colored("done", "blue")
+                log("done", "blue")
 
                 # git commit
-                print "Commiting using git...",
+                log("Commiting using git...", conma=True)
                 commit_msg = "The file was changed. This commited by psdwatcher. Timestamp : %s -> %s" % (old_timestamp, now_timestamp)
                 git("commit", "-m", commit_msg)
-                print termcolor.colored("done", "blue")
+                log("done", color="blue")
 
             else:
                 # file not changed 
