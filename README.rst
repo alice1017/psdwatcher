@@ -1,4 +1,4 @@
-.. image:: https://raw.github.com/alice1017/psdwatcher/master/psdwatcher_logo.jpg
+.. image:: https://raw.github.com/alice1017/psdwatcher/master/logo.jpg
 
 What is psdwatcher?
 #####################
