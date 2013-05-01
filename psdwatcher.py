@@ -136,18 +136,21 @@ def start_watch(namespace):
     else:
         raise IOError("You doesn't add psd file to watch list yet!")
 
+    # define the logger
     logger_opts = {
         "log_file": None,
-        "not_output": None
-    }
+        "not_output": None }
+
     if namespace.log_file:
         logger_opts["log_file"] = namespace.log_file
+
     if namespace.not_output:
         logger_opts["not_output"] = namespace.not_output
     
     logger = Logger(**logger_opts)
     log = logger.log
-        
+
+    # initialize default value
     counter = 0
     timestamp_register = {}
     binary_content = {}
