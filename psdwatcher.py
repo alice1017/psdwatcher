@@ -259,6 +259,7 @@ def start_watch(namespace):
                 # return back changed git user config
                 config_changer.return_back()
                 print termcolor.colored("psdwatcher has terminated.", "yellow")
+                sys.exit(0)
 
     
 def show_watch_list(namespace):
