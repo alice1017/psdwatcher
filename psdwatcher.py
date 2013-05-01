@@ -66,6 +66,23 @@ def is_in_gitrepo():
     else:
         return False
 
+class git_user_config_changer:
+
+    def __init__(self):
+        # get the original git config
+        self.origin_name = git("config", "user.name")
+        self.origin_email = git("config", "user.email")
+
+    def change(self):
+        # git user config change
+        git("config", "user.name", "psdwatcher")
+        git("config", "user.email", "https://github.com/alice1017/psdwatcher")
+
+    def return_back(self):
+        # git user config return back to origin
+        git("config", "user.name", self.origin_name)
+        git("config", "user.email", self.origin_email)
+
 class Logger(object):
 
     def __init__(self, log_file=None, not_output=None):
@@ -156,82 +173,92 @@ def start_watch(namespace):
     binary_content = {}
     watch_list_files_length = len(watch_list)
 
+    # change git config user.name and user.email
+    config_changer = git_user_config_changer()
+    config_changer.change()
+
     print "Start watching........"
 
     while True:
         for file_name, file_dir, file_path in watch_list:
-            if namespace.dev:
-                log("="*80)
-                log("Now watching file : %s" % termcolor.colored(file_name, "red"))
-            
-            # move dir
-            if namespace.dev: log("Moving Directory to %s" % termcolor.colored(file_dir, "blue"))
-            os.chdir(file_dir)
+            try:
+                if namespace.dev:
+                    log("="*80)
+                    log("Now watching file : %s" % termcolor.colored(file_name, "red"))
+                
+                # move dir
+                if namespace.dev: log("Moving Directory to %s" % termcolor.colored(file_dir, "blue"))
+                os.chdir(file_dir)
 
-            
-            # check whether there is git repository
-            if namespace.dev:
-                log("Checking wheter there is git repository... ", conma=True)
+                
+                # check whether there is git repository
+                if namespace.dev:
+                    log("Checking wheter there is git repository... ", conma=True)
 
-            if not is_in_gitrepo():
-                if namespace.dev: log("repository does not found", color="yellow")
-                raise IOError("fatal: Not a git repository (or any of the parent directories): .git")
+                if not is_in_gitrepo():
+                    if namespace.dev: log("repository does not found", color="yellow")
+                    raise IOError("fatal: Not a git repository (or any of the parent directories): .git")
 
-            if namespace.dev: log("repository does found", color="blue")
+                if namespace.dev: log("repository does found", color="blue")
 
 
-            # register original timestamp
-            if counter <= watch_list_files_length:
-                if namespace.dev: log("Registring file's original timestamp: %s" % os.stat(file_path)[stat.ST_MTIME])
+                # register original timestamp
+                if counter <= watch_list_files_length:
+                    if namespace.dev: log("Registring file's original timestamp: %s" % os.stat(file_path)[stat.ST_MTIME])
 
-                timestamp_register[file_name] = os.stat(file_path)[stat.ST_MTIME]
+                    timestamp_register[file_name] = os.stat(file_path)[stat.ST_MTIME]
 
-                if namespace.dev: log("Registering psd file's binary content")
+                    if namespace.dev: log("Registering psd file's binary content")
 
-                binary_content[file_name] = open(file_name).read()
+                    binary_content[file_name] = open(file_name).read()
+
+                    counter += 1
+                    continue
+
+                # take a timestamp
+                old_timestamp = timestamp_register[file_name]
+                now_timestamp = os.stat(file_path)[stat.ST_MTIME]
+
+                if namespace.dev:
+                    log("Taking a timestamp:")
+                    log("\told: %s" % timestamp_register[file_name])
+                    log("\tnew: %s" % os.stat(file_path)[stat.ST_MTIME])
+
+
+                # get the binary content
+                old_bincontent = binary_content[file_name]
+                now_bincontent = open(file_name).read()
+
+                if namespace.dev: log("Getting the psd file's binary content")
+
+                if old_timestamp != now_timestamp and old_bincontent != now_bincontent:
+                    # the file was overwritten
+
+                    # write log
+                    log("Catch the '%s' file's change!" % file_name, color="yellow")
+                    log("timestamp : %s -> %s" % (old_timestamp, now_timestamp))
+
+                    # git staging
+                    log("Staging using git...", conma=True)
+                    git("add", file_name)
+                    log("done", "blue")
+
+                    # git commit
+                    log("Commiting using git...", conma=True)
+                    commit_msg = "The file was changed. This commited by psdwatcher. Timestamp : %s -> %s" % (old_timestamp, now_timestamp)
+                    git("commit", "-m", commit_msg)
+                    log("done", color="blue")
+
+                else:
+                    # file not changed 
+                    continue
 
                 counter += 1
-                continue
 
-            # take a timestamp
-            old_timestamp = timestamp_register[file_name]
-            now_timestamp = os.stat(file_path)[stat.ST_MTIME]
-
-            if namespace.dev:
-                log("Taking a timestamp:")
-                log("\told: %s" % timestamp_register[file_name])
-                log("\tnew: %s" % os.stat(file_path)[stat.ST_MTIME])
-
-
-            # get the binary content
-            old_bincontent = binary_content[file_name]
-            now_bincontent = open(file_name).read()
-
-            if namespace.dev: log("Getting the psd file's binary content")
-
-            if old_timestamp != now_timestamp and old_bincontent != now_bincontent:
-                # the file was overwritten
-
-                # write log
-                log("Catch the '%s' file's change!" % file_name, color="yellow")
-                log("timestamp : %s -> %s" % (old_timestamp, now_timestamp))
-
-                # git staging
-                log("Staging using git...", conma=True)
-                git("add", file_name)
-                log("done", "blue")
-
-                # git commit
-                log("Commiting using git...", conma=True)
-                commit_msg = "The file was changed. This commited by psdwatcher. Timestamp : %s -> %s" % (old_timestamp, now_timestamp)
-                git("commit", "-m", commit_msg)
-                log("done", color="blue")
-
-            else:
-                # file not changed 
-                continue
-
-            counter += 1
+            except KeyboardInterrupt:
+                # return back changed git user config
+                config_changer.return_back()
+                print termcolor.colored("psdwatcher has terminated.", "yellow")
 
     
 def show_watch_list(namespace):
