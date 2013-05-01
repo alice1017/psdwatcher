@@ -29,25 +29,6 @@ cmd_watch.add_argument("--dev", action="store_true", dest="dev", help="Write out
 
 cmd_list = subparsers.add_parser("list", help="Show the files that was contained watch-list")
 
-def is_exist_listfile():
-    return os.access(WATCH_LIST_FILE, os.F_OK)
-
-def get_watch_list():
-    return pickle.load(open(WATCH_LIST_FILE))
-
-def update_list(obj):
-    pickle.dump(obj, open(WATCH_LIST_FILE,"w"))
-    return
-
-def is_in_gitrepo():
-    cmd = "git rev-parse --is-inside-work-tree".split()
-    proc = Popen(cmd, stdout=-1, stderr=-1, stdin=-1)
-    boolean = proc.communicate()[0][:-1]
-    if boolean == "true":
-        return True
-    else:
-        return False
-
 class GitError(BaseException): pass
 
 def git(cmd, *args, **kwargs):
@@ -66,6 +47,57 @@ def git(cmd, *args, **kwargs):
         return out[:-1]
     else:
         raise GitError(err)
+
+def is_exist_listfile():
+    return os.access(WATCH_LIST_FILE, os.F_OK)
+
+def get_watch_list():
+    return pickle.load(open(WATCH_LIST_FILE))
+
+def update_list(obj):
+    pickle.dump(obj, open(WATCH_LIST_FILE,"w"))
+    return
+
+def is_in_gitrepo():
+    boolean = git("rev-parse", "--is-inside-work-tree")
+    if boolean == "true":
+        return True
+    else:
+        return False
+
+class Logger(object):
+
+    def __init__(self, log_file=None, not_output=None):
+        if log_file:
+            if not os.access(log_file, os.F_OK):
+                self.logfile = open(log_save_file, "w+")
+            else:
+                raise IOError("%s log file is already exist." % log_file)
+        else:
+            self.logfile = None
+
+        if not_output:
+            self.not_output = True
+        else:
+            self.not_output = False
+
+    def log(self, string, color=None):
+        log_content = ""
+        
+        if color:
+            log_content = termcolor.colored(string, color)
+        else:
+            log_content = string
+
+        if self.logfile:
+            self.logfile.write(log_content)
+
+        if self.not_output:
+            return
+        
+        print log_content
+
+        return 
 
 
 
@@ -100,10 +132,17 @@ def start_watch(namespace):
     else:
         raise IOError("%s file does not found." % WATCH_LIST_FILE)
 
-    if namespace.log_file and os.access(namespace.log_file, os.F_OK):
-        raise IOError("%s log file is already exist." % namespace.log_file)
+    logger_opts = {
+        "log_file": None,
+        "not_output": None
+    }
+    if namespace.log_file:
+        logger_opts["log_file"] = namespace.log_file
+    if namespace.not_output:
+        logger_opts["not_output"] = namespace.not_output
+    
+    logger = Logger(**logger_opts)
         
-
     counter = 0
     timestamp_register = {}
     binary_content = {}
