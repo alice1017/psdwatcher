@@ -40,7 +40,8 @@ run [, [-o [LOG_FILE]], [--not-output-log], [--dev]]
 
     :-o:                psdwatcherが出力したログをログファイルに書き出す。
     :--dev:             開発者向けログレベルに設定
-    :--not-output-log: ログを出力しない
+
+    :--not-output-log:  ログを出力しない
 
 Other Comamnd Usage
 #####################
