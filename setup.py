@@ -3,6 +3,7 @@
 
 import os
 from distutils.core import setup
+from psdwatcher import __version__, __author__
 
 def makebin():
     # make dir
@@ -19,8 +20,8 @@ makebin()
 
 setup(
 	name="psdwatcher",
-	author="Alice1017",
-	version="1.0",
+	author=__author__,
+	version=__version__,
 	license=open("LICENSE").read(),
     url="https://github.com/alice1017/psdwatcher",
 	description="You can watch the change log of psd file using git",

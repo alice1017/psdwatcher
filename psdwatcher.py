@@ -11,11 +11,14 @@ import cPickle as pickle
 from argparse   import ArgumentParser
 from subprocess import Popen
 
+__version__ = "1.0.1"
+__author__ = "Alice1017 <https://github.com/alice1017>"
+
 WATCH_LIST_FILE = os.environ["HOME"]+"/.psdwatcher.rc"
 
 parser = ArgumentParser(
     prog="psdwatcher",
-    version="1.0",
+    version=__version__,
     description="You can watch the change log of psd file using git.")
 
 subparsers = parser.add_subparsers(dest="subcmd")
