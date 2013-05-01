@@ -35,11 +35,12 @@ PSDファイルを登録したら、あとはpsdwatcherを **run** するだけ�
 psdwatcherはPSDファイルの変更を追うためのトリガーとしてrunコマンドを使用しています。
 このトリガーは後々変更するかもしれません。
     
-run [, [-o [LOG_FILE]], [--dev]]
+run [, [-o [LOG_FILE]], [--not-output-log], [--dev]]
     PSDファイルのウォッチングを始める。
 
     :-o:    psdwatcherが出力したログをログファイルに書き出す。
     :--dev: 開発者向けログレベルに設定
+    :--not-output-log: ログを出力しない
 
 Other Comamnd Usage
 #####################
