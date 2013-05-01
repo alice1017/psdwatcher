@@ -15,7 +15,7 @@ WATCH_LIST_FILE = os.environ["HOME"]+"/.psdwatcher.rc"
 
 parser = ArgumentParser(
     prog="psdwatcher",
-    version="1.0b",
+    version="1.0",
     description="You can watch the change log of psd file using git.")
 
 subparsers = parser.add_subparsers(dest="subcmd")

@@ -20,7 +20,7 @@ makebin()
 setup(
 	name="psdwatcher",
 	author="Alice1017",
-	version="1.0b",
+	version="1.0",
 	license=open("LICENSE").read(),
     url="https://github.com/alice1017/psdwatcher",
 	description="You can watch the change log of psd file using git",
