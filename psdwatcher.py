@@ -238,9 +238,16 @@ def watch_starter(namespace):
                         log("%s psd file's new binary content" % termcolor.colored("Updating", "yellow"))
                         binary_content[file_name] = open(file_name).read()
 
+                        counter += 1
                         continue
 
-                counter += 1
+                    else:
+                        counter += 1
+                        continue
+
+                else:
+                    counter += 1
+                continue
 
             except KeyboardInterrupt:
                 print "\n"
