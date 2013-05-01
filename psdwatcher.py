@@ -66,23 +66,6 @@ def is_in_gitrepo():
     else:
         return False
 
-class git_user_config_changer:
-
-    def __init__(self):
-        # get the original git config
-        self.origin_name = git("config", "user.name")
-        self.origin_email = git("config", "user.email")
-
-    def change(self):
-        # git user config change
-        git("config", "user.name", "psdwatcher")
-        git("config", "user.email", "https://github.com/alice1017/psdwatcher")
-
-    def return_back(self):
-        # git user config return back to origin
-        git("config", "user.name", self.origin_name)
-        git("config", "user.email", self.origin_email)
-
 class Logger(object):
 
     def __init__(self, log_file=None, not_output=None):
@@ -173,10 +156,6 @@ def start_watch(namespace):
     binary_content = {}
     watch_list_files_length = len(watch_list)
 
-    # change git config user.name and user.email
-    config_changer = git_user_config_changer()
-    config_changer.change()
-
     print "Start watching........"
 
     while True:
@@ -246,7 +225,7 @@ def start_watch(namespace):
                     # git commit
                     log("Commiting using git...", conma=True)
                     commit_msg = "The file was changed. This commited by psdwatcher. Timestamp : %s -> %s" % (old_timestamp, now_timestamp)
-                    git("commit", "-m", commit_msg)
+                    git("commit", "--author", "psdwatcher",  "-m", commit_msg)
                     log("done", color="blue")
 
                 else:
@@ -256,8 +235,6 @@ def start_watch(namespace):
                 counter += 1
 
             except KeyboardInterrupt:
-                # return back changed git user config
-                config_changer.return_back()
                 print "\n"
                 print termcolor.colored("Caught KeyboardInterrupt!\npsdwatcher has terminated.", "yellow")
                 sys.exit(0)
