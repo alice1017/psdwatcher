@@ -204,9 +204,7 @@ def watch_starter(namespace):
                     log("\told: %s" % timestamp_register[file_name])
                     log("\tnew: %s" % os.stat(file_path)[stat.ST_MTIME])
 
-
-
-                # if old_timestamp != now_timestamp and old_bincontent != now_bincontent:
+                # check timestamp difficult
                 if old_timestamp != now_timestamp:
                     # get the binary content
                     old_bincontent = binary_content[file_name]
