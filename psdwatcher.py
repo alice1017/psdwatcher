@@ -258,7 +258,8 @@ def start_watch(namespace):
             except KeyboardInterrupt:
                 # return back changed git user config
                 config_changer.return_back()
-                print termcolor.colored("psdwatcher has terminated.", "yellow")
+                print "\n"
+                print termcolor.colored("Caught KeyboardInterrupt!\npsdwatcher has terminated.", "yellow")
                 sys.exit(0)
 
     
