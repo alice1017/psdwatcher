@@ -134,7 +134,7 @@ def start_watch(namespace):
     if is_exist_listfile():
         watch_list = get_watch_list()
     else:
-        raise IOError("%s file does not found." % WATCH_LIST_FILE)
+        raise IOError("You doesn't add psd file to watch list yet!")
 
     logger_opts = {
         "log_file": None,
