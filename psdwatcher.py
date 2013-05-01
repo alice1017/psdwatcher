@@ -168,6 +168,7 @@ def start_watch(namespace):
             if namespace.dev: log("Moving Directory to %s" % termcolor.colored(file_dir, "blue"))
             os.chdir(file_dir)
 
+            
             # check whether there is git repository
             if namespace.dev:
                 log("Checking wheter there is git repository... ", conma=True)
@@ -182,9 +183,11 @@ def start_watch(namespace):
             # register original timestamp
             if counter <= watch_list_files_length:
                 if namespace.dev: log("Registring file's original timestamp: %s" % os.stat(file_path)[stat.ST_MTIME])
+
                 timestamp_register[file_name] = os.stat(file_path)[stat.ST_MTIME]
 
                 if namespace.dev: log("Registering psd file's binary content")
+
                 binary_content[file_name] = open(file_name).read()
 
                 counter += 1
@@ -193,14 +196,17 @@ def start_watch(namespace):
             # take a timestamp
             old_timestamp = timestamp_register[file_name]
             now_timestamp = os.stat(file_path)[stat.ST_MTIME]
+
             if namespace.dev:
                 log("Taking a timestamp:")
                 log("\told: %s" % timestamp_register[file_name])
                 log("\tnew: %s" % os.stat(file_path)[stat.ST_MTIME])
 
+
             # get the binary content
             old_bincontent = binary_content[file_name]
             now_bincontent = open(file_name).read()
+
             if namespace.dev: log("Getting the psd file's binary content")
 
             if old_timestamp != now_timestamp and old_bincontent != now_bincontent:
