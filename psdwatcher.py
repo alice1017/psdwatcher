@@ -225,12 +225,17 @@ def watch_starter(namespace):
 
                     # git commit
                     log("Commiting using git...", conma=True)
-                    commit_msg = "The file was changed. This commited by psdwatcher. Timestamp : %s -> %s" % (old_timestamp, now_timestamp)
-                    git("commit", "--author", "psdwatcher",  "-m", commit_msg)
+                    commit_msg = "The '%s' file was changed. This commited by psdwatcher. Timestamp : %s -> %s" % (file_name, old_timestamp, now_timestamp)
+                    git("commit", "--author", "psdwatcher <https://github.com/alice1017/psdwatcher/>",  "-m", commit_msg)
                     log("done", color="blue")
 
-                else:
-                    # file not changed 
+                    # update registered content
+                    log("Updating file's new timestamp: %s" % now_timestamp)
+                    timestamp_register[file_name] = now_timestamp
+
+                    log("Updating psd file's new binary content")
+                    binary_content[file_name] = open(file_name).read()
+
                     continue
 
                 counter += 1
