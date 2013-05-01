@@ -130,7 +130,8 @@ def add_file(namespace):
         raise KeyError("'%s' file is already added." % file_name)
 
 
-def start_watch(namespace):
+
+def watch_starter(namespace):
     if is_exist_listfile():
         watch_list = get_watch_list()
     else:
@@ -255,7 +256,7 @@ if __name__ == "__main__":
 
     fn_register = {
         "add": add_file,
-        "run": start_watch,
+        "run": watch_starter,
         "list": show_watch_list}
 
     for key in fn_register.keys():
