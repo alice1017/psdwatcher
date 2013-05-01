@@ -111,24 +111,32 @@ def add_file(namespace):
     file_path = os.path.abspath(os.path.join(os.getcwd(), namespace.psd_file))
     file_dir = os.path.dirname(file_path)
 
+    # check file can access
     if not os.access(file_path, os.F_OK):
         raise IOError("%s file does not found." % file_path)
 
+    # check file is psd file
     if file_ext != "psd":
         raise IOError("fatal: '%s' this file is not PSD file!!" % file_name)
 
+    # check whether there is git repository
+    os.chdir(file_dir)
+    if not is_in_gitrepo():
+        raise IOError("fatal: Not a git repository (or any of the parent directories): .git")
+    
+    # get watch list
     if is_exist_listfile():
         watch_list = get_watch_list()
     else:
         watch_list = []
 
+    # append file to watch list 
     if file_name not in [n for n,d,p in watch_list]:
         watch_list.append( (file_name, file_dir, file_path) )
         update_list(watch_list)
 
     else:
         raise KeyError("'%s' file is already added." % file_name)
-
 
 
 def watch_starter(namespace):
@@ -171,17 +179,7 @@ def watch_starter(namespace):
                 os.chdir(file_dir)
 
                 
-                # check whether there is git repository
-                if namespace.dev:
-                    log("Checking wheter there is git repository... ", conma=True)
-
-                if not is_in_gitrepo():
-                    if namespace.dev: log("repository does not found", color="yellow")
-                    raise IOError("fatal: Not a git repository (or any of the parent directories): .git")
-
-                if namespace.dev: log("repository does found", color="blue")
-
-
+                
                 # register original timestamp
                 if counter <= watch_list_files_length:
                     if namespace.dev: log("Registring file's original timestamp: %s" % os.stat(file_path)[stat.ST_MTIME])
