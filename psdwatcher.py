@@ -155,9 +155,6 @@ def start_watch(namespace):
 
     print "Start watching........"
 
-    if namespace.log_file:
-        sys.stdout = open(namespace.log_file, "w+")
-
     while True:
         for file_name, file_dir, file_path in watch_list:
             if namespace.dev:
