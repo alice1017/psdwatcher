@@ -26,7 +26,7 @@ setup(
     url="https://github.com/alice1017/psdwatcher",
 	description="You can watch the change log of psd file using git",
     long_description=open("README.rst").read(),
-	packages=['termcolor'],
+	requires=['termcolor'],
 	scripts=['bin/psdwatcher']
 )
 
