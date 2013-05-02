@@ -57,3 +57,9 @@ list
 
 .. include:: changelog.rst
 
+TODO
+#############
+
+runコマンドに **--background** オプションを追加する
+    **python-daemon** モジュールを使ってrunコマンドの動きをbackgroundで行うオプションを作る
+
