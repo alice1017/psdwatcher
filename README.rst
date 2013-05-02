@@ -5,6 +5,16 @@ What is psdwatcher?
 
 **psdwatcher** はPhotoshopで扱う **PSDファイル** の変更を **git** を使ってステージングやコミットを行い、 *いつでも前のバージョン見れるようにする* Pythonスクリプトです。
 
+Install
+########
+
+::
+    
+    $ git clone git://github.com/alice1017/psdwatcher.git
+    $ cd psdwatcher
+    $ python setup.py build install
+
+
 How to Use?
 ############
 
