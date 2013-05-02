@@ -55,3 +55,5 @@ list
     psdwatcherが所持しているウォッチリストに登録されているPSDファイルを出力します。
 
 
+.. include:: changelog.rst
+
