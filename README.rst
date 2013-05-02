@@ -60,6 +60,6 @@ list
 TODO
 #############
 
-runコマンドに **--background** オプションを追加する
+Add **--background** option at run command
     **python-daemon** モジュールを使ってrunコマンドの動きをbackgroundで行うオプションを作る
 
