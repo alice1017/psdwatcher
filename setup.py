@@ -19,14 +19,14 @@ def makebin():
 makebin()
 
 setup(
-	name="psdwatcher",
-	author=__author__,
-	version=__version__,
-	license=open("LICENSE").read(),
+    name="psdwatcher",
+    author=__author__,
+    version=__version__,
+    license=open("LICENSE").read(),
     url="https://github.com/alice1017/psdwatcher",
-	description="You can watch the change log of psd file using git",
+    description="You can watch the change log of psd file using git",
     long_description=open("README.rst").read(),
-	requires=['termcolor'],
-	scripts=['bin/psdwatcher']
+    requires=['termcolor'],
+    scripts=['bin/psdwatcher']
 )
 
