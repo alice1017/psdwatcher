@@ -13,6 +13,17 @@ parser = argparse.ArgumentParser(
         "PSDwatcher - watching psd, and commit automatically."
 )
 
+parser.add_argument(
+    "--traceback",
+    action="store_true",
+    dest="traceback",
+    help= \
+        "When PSDwatcher raises error, " \
+        "print only error message. " \
+        "But use this argument, " \
+        "you can show traceback of error."
+)
+
 subparser = parser.add_subparsers(
     title="commands",
     dest="command"
