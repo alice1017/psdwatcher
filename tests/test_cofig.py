@@ -4,8 +4,10 @@
 import os
 import unittest
 import tempfile
+import cPickle as pickle
 
 from psdwatcher.config import FileContainer
+
 
 class ContainerTester(unittest.TestCase):
 
@@ -81,5 +83,21 @@ class ContainerTester(unittest.TestCase):
         self.assertFalse(
             container4._is_psd(tmp_psdfile4))
 
+    def test_add_file(self):
 
-    
+        tmp_psdfile = self._make_tmp_psdfile()
+        container = FileContainer(container_file=self.container_file)
+        self.assertTrue(
+            container.add_file(tmp_psdfile))
+
+    def test_get_container(self):
+
+        tmp_psdfile = self._make_tmp_psdfile()
+        container = FileContainer(container_file=self.container_file)
+        container.add_file(tmp_psdfile)
+        loaded_container = container._get_container()
+        self.assertEqual(
+            loaded_container,
+            [tmp_psdfile]
+        )
+
