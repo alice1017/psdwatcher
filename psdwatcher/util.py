@@ -3,7 +3,7 @@
 
 import logging
 
-class LoggerWithHeader(logging.Logger):
+class Logger(logging.Logger):
 
     HEADER = "[ {0} ] "
 
@@ -46,7 +46,7 @@ class LoggerWithHeader(logging.Logger):
 
     fatal = critical
 
-Logger = LoggerWithHeader("psdwatcher")
+Logger = Logger("psdwatcher")
 handler = logging.StreamHandler()
 handler.setLevel(logging.DEBUG)
 Logger.setLevel(logging.DEBUG)
