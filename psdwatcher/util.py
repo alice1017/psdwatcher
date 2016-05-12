@@ -39,7 +39,7 @@ class Logger(logging.Logger):
 
     def critical(self, msg, *args, **kwargs):
 
-        header = self.HEADER.format("critical")
+        header = self.HEADER.format("CRITICAL")
 
         if self.isEnabledFor(logging.CRITICAL):
             self._log(logging.CRITICAL, header+msg, args, **kwargs)
