@@ -73,7 +73,10 @@ class FileContainer(object):
 
         if os.access(file_name, os.F_OK) is True:
 
-            if self._get_ext(file_name) == ".psd":
+            raw_bin = open(file_name, "r").read()
+
+            if self._get_ext(file_name) == ".psd" \
+                            and raw_bin[0:4] == "8BPS":
                 return True
             else:
                 return False
