@@ -24,6 +24,13 @@ parser.add_argument(
         "you can show traceback of error."
 )
 
+parser.add_argument(
+    "--dev",
+    action="store_true",
+    dest="dev",
+    help= "Chnage development mode"
+)
+
 subparser = parser.add_subparsers(
     title="commands",
     dest="command"
