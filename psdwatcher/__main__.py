@@ -10,12 +10,15 @@ from psdwatcher.config import FileContainer
 def program(args):
 
     #dev:
-    container = FileContainer("psdwatcher.rc")
+    if args.dev:
+        container = FileContainer("psdwatcher-dev.rc")
+    else:
+        container = FileContainer()
 
     if args.command == "add":
 
         container.add_file(args.file)
-        print "Add '{0}' to watching list.".format(args.file)
+        Logger.info("Add '{0}' to watching list.".format(args.file))
         sys.exit(0)
 
 
@@ -37,9 +40,7 @@ def main():
             Logger.exception(e)
 
         else:
-            Logger.error(
-                "Error: {0}\n".format(e.message)
-            )
+            Logger.error(e.message)
 
         sys.exit(1)
 
