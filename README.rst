@@ -3,6 +3,12 @@
 What is psdwatcher?
 #####################
 
+-----
+
+|build| |coverage| |license|
+
+-----
+
 **psdwatcher** はPhotoshopで扱う **PSDファイル** の変更を **git** を使ってステージングやコミットを行い、 *いつでも前のバージョン見れるようにする* Pythonスクリプトです。
 
 Install
@@ -73,3 +79,17 @@ TODO
 Add **--background** option at run command
     **python-daemon** モジュールを使ってrunコマンドの動きをbackgroundで行うオプションを作る
 
+
+
+.. |build| image:: https://img.shields.io/travis/alice1017/psdwatcher/v2.svg?style=flat-square
+    :target: https://coveralls.io/r/jkbrzt/httpie?branch=master
+    :alt: Travis-CI
+
+.. |coverage| image:: https://img.shields.io/coveralls/alice1017/psdwatcher/v2.svg?style=flat-square&label=coverage
+    :target: https://coveralls.io/r/alice1017/psdwatcher?branch=v2
+    :alt: Test coverage
+
+.. |license| image:: https://img.shields.io/badge/license-MIT-blue.svg
+    :target: https://raw.githubusercontent.com/alice1017/psdwatcher/master/LICENSE
+    :alt: License
+　　
