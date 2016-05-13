@@ -89,7 +89,7 @@ Add **--background** option at run command
     :target: https://coveralls.io/r/alice1017/psdwatcher?branch=v2
     :alt: Test coverage
 
-.. |license| image:: https://img.shields.io/badge/license-MIT-blue.svg
+.. |license| image:: https://img.shields.io/badge/license-MIT-blue.svg?style=flat-square
     :target: https://raw.githubusercontent.com/alice1017/psdwatcher/master/LICENSE
     :alt: License
 　　
