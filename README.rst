@@ -82,7 +82,7 @@ Add **--background** option at run command
 
 
 .. |build| image:: https://img.shields.io/travis/alice1017/psdwatcher/v2.svg?style=flat-square
-    :target: https://coveralls.io/r/jkbrzt/httpie?branch=master
+    :target: https://travis-ci.org/alice1017/psdwatcher
     :alt: Travis-CI
 
 .. |coverage| image:: https://img.shields.io/coveralls/alice1017/psdwatcher/v2.svg?style=flat-square&label=coverage
