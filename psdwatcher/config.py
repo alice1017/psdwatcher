@@ -10,6 +10,12 @@ DEFAULT_CONTAINER_FILE = str(os.environ.get(
     os.path.expanduser('~/.psdwatcher')
 ))
 
+DEFAULT_COMMIT_AUTHOR = str(os.environ.get(
+    'PSDWATCHER_COMMIT_AUTHOR',
+    'psdwatcher <https://github.com/alice1017/psdwatcher/>'
+))
+
+
 class FileContainer(object):
 
     def __init__(self, container_file=DEFAULT_CONTAINER_FILE):
