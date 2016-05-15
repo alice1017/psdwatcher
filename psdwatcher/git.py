@@ -3,6 +3,7 @@
 
 from subprocess import Popen
 
+
 class GitError(BaseException):
 
     pass
@@ -54,7 +55,7 @@ class Git(object):
                 command_args.append(arg_fmt.format(key))
                 command_args.append(val)
 
-        self._exec("commit", *command_args, stdin=1)
+        return self._exec("commit", *command_args)
 
     def rev_parse(self, *args):
 
@@ -68,3 +69,4 @@ class Git(object):
         else:
             return False
 
+git = Git()
