@@ -49,6 +49,17 @@ class FileContainer(object):
 
         return True
 
+    def release(self):
+
+        if len(self.container) == 0:
+            raise IndexError(
+                "PSDwatcher doesn't have a PSD file. " \
+                "Please use 'add' command at first."
+            )
+
+        return self.container
+
+
     def save(self):
 
         pickle.dump(self.container, open(self.container_file,"w"))
