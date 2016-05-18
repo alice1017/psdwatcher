@@ -3,9 +3,10 @@
 
 import logging
 
+
 class Logger(logging.Logger):
 
-    HEADER = "[ {0} ] "
+    HEADER = "[ {:<8} ] "
 
     def debug(self, msg, *args, **kwargs):
         
