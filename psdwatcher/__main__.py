@@ -35,7 +35,7 @@ def program(args):
     #    try:
     #        while True:
     #            for watcher in watchers:
-    #                watcher.watch()
+    #                watcher.watch(dev=args.dev)
 
     #    except KeyboardInterrupt:
     #        Logger.info("KeyboardInterrupt: PSDwatcher terminated.")
