@@ -12,3 +12,8 @@ script:
 
 after_success:
     - coveralls --verbose
+
+notifications:
+  email:
+    - genocidedragon@gmail.com
+
