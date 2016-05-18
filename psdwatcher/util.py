@@ -6,7 +6,7 @@ import logging
 
 class Logger(logging.Logger):
 
-    HEADER = "[ {:<8}] "
+    HEADER = "[ {:^7} ] "
 
     def debug(self, msg, *args, **kwargs):
         
