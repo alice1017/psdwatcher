@@ -20,28 +20,35 @@ class ModificationWatcher(object):
 
     def watch(self, dev=False):
 
-        Logger.info("Watch start.")
-
-        if dev:
-            Logger.debug("target: '{0}'".format(self.target))
+        Logger.info("Watching '{0}'".format(self.target))
 
         # 1. find modify
-
         # 1-1. get new modified time and hash
         new_modified_time = self.get_mtime(self.target)
         new_file_hash = self.get_sha224_hash(self.target)
 
         if dev:
-            Logger.debug("1-1. Got a timestamp")
+            Logger.debug("1. Got a file timestamp")
             Logger.debug("\tOld mtime: {0}".format(
                 self.strmtime(self.target_modified_time)))
             Logger.debug("\tNew mtime: {0}".format(
                 self.strmtime(new_modified_time)))
-            Logger.debug("1-2. Got a file hash")
+            Logger.debug("2. Got a file hash")
             Logger.debug("\tOld hash: {0}".format(new_file_hash[0:15]))
             Logger.debug("\tNew hash: {0}".format(self.target_file_hash[0:15]))
 
         # 1-2. compare
+        if self.target_file_hash != new_file_hash \
+            and self.target_modified_time != new_modified_time:
+
+            Logger.info("Catch the file modify!")
+
+        else:
+
+            if dev:
+                Logger.info("PSDwatcher can't catch modify.")
+
+            return
 
         raise Exception # under development
 
