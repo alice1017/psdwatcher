@@ -5,6 +5,7 @@ import sys
 
 from psdwatcher.cli    import parser
 from psdwatcher.util   import Logger
+from psdwatcher.core   import ModificationWatcher
 from psdwatcher.config import FileContainer
 
 def program(args):
@@ -21,28 +22,22 @@ def program(args):
         Logger.info("Add '{0}' to watching list.".format(args.file))
         sys.exit(0)
 
-    #elif args.command == "run":
+    elif args.command == "run":
 
-    #    #dev:
-    #    from psdwatcher.core import ModificationWathcer
+        psdfiles = container.release()
+        watchers = []
 
-    #    psdfiles = container.release()
-    #    watchers = []
-    #    
-    #    for psdfile in psdfiles:
-    #        watchers.append(ModificationWathcer(psdfile))
+        for psdfile in psdfiles:
+            watchers.append(ModificationWatcher(psdfile))
 
-    #    try:
-    #        while True:
-    #            for watcher in watchers:
-    #                watcher.watch(dev=args.dev)
+        try:
+            while True:
+                for watcher in watchers:
+                    watcher.watch(dev=args.dev)
 
-    #    except KeyboardInterrupt:
-    #        Logger.info("KeyboardInterrupt: PSDwatcher terminated.")
-    #        sys.exit(0)
-    #        
-
-
+        except KeyboardInterrupt:
+            Logger.fatal("KeyboardInterrupt: PSDwatcher terminated.")
+            sys.exit(0)
 
 def main():
 
