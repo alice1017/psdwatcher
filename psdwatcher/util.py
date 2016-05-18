@@ -6,7 +6,7 @@ import logging
 
 class Logger(logging.Logger):
 
-    HEADER = "[ {:<8} ] "
+    HEADER = "[ {:<8}] "
 
     def debug(self, msg, *args, **kwargs):
         
@@ -37,6 +37,12 @@ class Logger(logging.Logger):
 
         if self.isEnabledFor(logging.ERROR):
             self._log(logging.ERROR, header+msg, args, **kwargs)
+
+    def exception(self, msg, *args, **kwargs):
+
+        kwargs['exc_info'] = 1
+        if self.isEnabledFor(logging.ERROR):
+            self._log(logging.ERROR, msg, args, **kwargs)
 
     def critical(self, msg, *args, **kwargs):
 
