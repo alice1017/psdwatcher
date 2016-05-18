@@ -57,16 +57,23 @@ class Git(object):
 
         return self._exec("commit", *command_args)
 
+    def init(self):
+
+        self._exec("init")
+
     def rev_parse(self, *args):
 
         return self._exec("rev-parse", args)
 
     def is_inside_work_tree(self):
         
-        boolean = self.rev_parse("--is-inside-work-tree")
+        try:
+            boolean = self.rev_parse("--is-inside-work-tree")
+
+        except GitError:
+            return False
+
         if boolean == "true":
             return True
-        else:
-            return False
 
 git = Git()
