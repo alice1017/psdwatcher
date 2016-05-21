@@ -20,7 +20,7 @@ class LoggerTester(unittest.TestCase):
         self.logger.removeHandler(logging.StreamHandler())
         self.logger.addHandler(self.handler)
 
-        self.header = "[ {0} ] "
+        self.header = "[ {:^7} ] "
 
     def tearDown(self):
 
