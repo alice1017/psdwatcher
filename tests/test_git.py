@@ -50,14 +50,9 @@ class GitOperatorTester(unittest.TestCase):
 
         git._exec("init")
         git.add("tmpfile")
-        result = git._exec("status")
+        result = git._exec("status", "-s")
 
-        self.assertEqual(
-            "On branch master\n\nInitial commit\n\n" \
-            "Changes to be committed:\n  (use " \
-            '"git rm --cached <file>..." to unstage)' \
-            "\n\n\tnew file:   tmpfile", result
-        )
+        self.assertEqual(result, "A  tmpfile")
 
         msg = "test commit"
         result = git.commit(msg)
