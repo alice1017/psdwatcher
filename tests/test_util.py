@@ -8,6 +8,8 @@ import unittest
 from StringIO        import StringIO
 from psdwatcher.util import Logger
 
+from tempfile import TemporaryFile
+
 class LoggerTester(unittest.TestCase):
 
     def setUp(self):
@@ -17,7 +19,9 @@ class LoggerTester(unittest.TestCase):
 
         self.handler = logging.StreamHandler(self.stream)
 
-        self.logger.removeHandler(logging.StreamHandler())
+        for handler in self.logger.handlers:
+            self.logger.removeHandler(handler)
+
         self.logger.addHandler(self.handler)
 
         self.header = "[ {:^7} ] "
