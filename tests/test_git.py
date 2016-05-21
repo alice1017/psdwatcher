@@ -6,8 +6,9 @@ import sys
 import tempfile
 import unittest
 
-from psdwatcher.git import git, GitError
-from StringIO       import StringIO
+from StringIO import StringIO
+from psdwatcher.git    import git, GitError
+from psdwatcher.config import DEFAULT_COMMIT_AUTHOR
 
 class GitOperatorTester(unittest.TestCase):
 
@@ -55,7 +56,7 @@ class GitOperatorTester(unittest.TestCase):
         self.assertEqual(result, "A  tmpfile")
 
         msg = "test commit"
-        result = git.commit(msg)
+        result = git.commit(msg, author=DEFAULT_COMMIT_AUTHOR)
         self.assertTrue(
             result.split("\n")[0].endswith(msg)
         )
