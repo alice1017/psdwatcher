@@ -8,7 +8,8 @@ install:
     - pip install coveralls
 
 script:
-    - git --version
+    - git config --global user.email "travis@psdwatcher.com"
+    - git config --global user.name "psdwatcher"
     - coverage run test.py
 
 after_success:
