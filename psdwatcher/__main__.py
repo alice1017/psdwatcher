@@ -1,16 +1,17 @@
 #!/usr/bin/env python
-#coding: utf-8
+# coding: utf-8
 
 import sys
 
-from psdwatcher.cli    import parser
-from psdwatcher.util   import Logger
-from psdwatcher.core   import ModificationWatcher
+from psdwatcher.cli import parser
+from psdwatcher.util import Logger
+from psdwatcher.core import ModificationWatcher
 from psdwatcher.config import FileContainer
+
 
 def program(args):
 
-    #dev:
+    # dev:
     if args.dev:
         container = FileContainer("psdwatcher-dev.rc")
     else:
@@ -39,6 +40,7 @@ def program(args):
             Logger.fatal("KeyboardInterrupt: PSDwatcher terminated.")
             sys.exit(0)
 
+
 def main():
 
     if len(sys.argv) == 1:
@@ -61,8 +63,7 @@ def main():
 
         sys.exit(1)
 
-    
+
 if __name__ == "__main__":
 
     main()
-    
