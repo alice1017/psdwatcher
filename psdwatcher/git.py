@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-#coding: utf-8
+# coding: utf-8
 
 from subprocess import Popen
 
@@ -7,6 +7,7 @@ from subprocess import Popen
 class GitError(BaseException):
 
     pass
+
 
 class Git(object):
 
@@ -24,7 +25,7 @@ class Git(object):
         else:
             command = ("git", cmd) + args
 
-        stdin  = int(kwargs["stdin"])  if "stdin"  in kwargs else -1
+        stdin = int(kwargs["stdin"]) if "stdin" in kwargs else -1
         stdout = int(kwargs["stdout"]) if "stdout" in kwargs else -1
         stderr = int(kwargs["stderr"]) if "stderr" in kwargs else -1
 
@@ -66,7 +67,7 @@ class Git(object):
         return self._exec("rev-parse", args)
 
     def is_inside_work_tree(self):
-        
+
         try:
             boolean = self.rev_parse("--is-inside-work-tree")
 
