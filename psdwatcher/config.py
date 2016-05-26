@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-#coding: utf-8
+# coding: utf-8
 
 import os
 
@@ -25,7 +25,6 @@ class FileContainer(object):
 
     def add_file(self, file_name):
 
-        file_dir = os.path.dirname(file_name)
         file_path = os.path.abspath(os.path.join(
             os.getcwd(),
             file_name
@@ -37,9 +36,10 @@ class FileContainer(object):
             raise IOError(
                 "'{0}' is not PSD.".format(file_name)
             )
-        
+
         if file_path not in self.container:
             self.container.append(file_path)
+
         else:
             raise IOError(
                 "'{0}' is duplicated.".format(file_name)
@@ -53,20 +53,19 @@ class FileContainer(object):
 
         if len(self.container) == 0:
             raise IndexError(
-                "PSDwatcher doesn't have a PSD file. " \
+                "PSDwatcher doesn't have a PSD file. "
                 "Please use 'add' command at first."
             )
 
         return self.container
 
-
     def save(self):
 
-        pickle.dump(self.container, open(self.container_file,"w"))
+        pickle.dump(self.container, open(self.container_file, "w"))
 
     def load(self):
 
-        return pickle.load(open(self.container_file,"r"))
+        return pickle.load(open(self.container_file, "r"))
 
     def _is_exist_container_file(self):
 
@@ -93,14 +92,14 @@ class FileContainer(object):
             raw_bin = open(file_name, "r").read()
 
             if self._get_ext(file_name) == ".psd" \
-                            and raw_bin[0:4] == "8BPS":
+               and raw_bin[0:4] == "8BPS":
+
                 return True
             else:
+
                 return False
 
         else:
             raise IOError(
                 "'{0}' file doesn't found.".format(file_name)
             )
-
-
