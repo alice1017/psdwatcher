@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-#coding: utf-8
+# coding: utf-8
 
 import os
 import sys
@@ -14,8 +14,7 @@ if __name__ == "__main__":
     runner = TextTestRunner(verbosity=2)
     test_result = runner.run(test_loader.discover(test_path)).wasSuccessful()
 
-    if test_result == False:
+    if test_result is False:
         sys.exit(1)
     else:
         sys.exit(0)
-
