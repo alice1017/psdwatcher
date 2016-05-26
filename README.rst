@@ -5,7 +5,7 @@ What is psdwatcher?
 
 -----
 
-|build| |coverage| |license|
+|build| |coverage| |gitter| |license|
 
 -----
 
@@ -88,6 +88,10 @@ Add **--background** option at run command
 .. |coverage| image:: https://img.shields.io/coveralls/alice1017/psdwatcher/v2.svg?style=flat-square&label=coverage
     :target: https://coveralls.io/r/alice1017/psdwatcher?branch=v2
     :alt: Test coverage
+
+.. |gitter| image:: https://img.shields.io/gitter/room/alice1017/psdwatcher.svg?maxAge=2592000?style=flat-square
+   :target: https://gitter.im/alice1017/psdwatcher
+   :alt: chat on gitter
 
 .. |license| image:: https://img.shields.io/badge/license-MIT-blue.svg?style=flat-square
     :target: https://raw.githubusercontent.com/alice1017/psdwatcher/master/LICENSE
