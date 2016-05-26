@@ -1,13 +1,14 @@
 #!/usr/bin/env python
-#coding: utf-8
+# coding: utf-8
 
 import os
 
-from hashlib  import sha224
+from hashlib import sha224
 from datetime import datetime
+from psdwatcher.git import git
 from psdwatcher.util import Logger
-from psdwatcher.git  import git
 from psdwatcher.config import DEFAULT_COMMIT_AUTHOR
+
 
 class ModificationWatcher(object):
 
@@ -38,8 +39,10 @@ class ModificationWatcher(object):
 
         if dev:
             Logger.debug("1. Got a file timestamp")
-            Logger.debug("\tOld mtime: {0}".format(self.strmtime(self.target_modified_time)))
-            Logger.debug("\tNew mtime: {0}".format(self.strmtime(new_modified_time)))
+            Logger.debug("\tOld mtime: {0}".format(
+                         self.strmtime(self.target_modified_time)))
+            Logger.debug("\tNew mtime: {0}".format(
+                         self.strmtime(new_modified_time)))
 
             Logger.debug("2. Got a file hash")
             Logger.debug("\tOld hash: {0}".format(new_file_hash[0:15]))
@@ -48,7 +51,7 @@ class ModificationWatcher(object):
         # 1-2. Compare variables.
 
         if self.target_file_hash != new_file_hash \
-            and self.target_modified_time != new_modified_time:
+           and self.target_modified_time != new_modified_time:
 
             Logger.info("Catch the file modify!")
 
@@ -89,14 +92,14 @@ class ModificationWatcher(object):
         # ===========================
 
         if dev:
-            Logger.info("Staged '{0}' to git.".format(self.target)
+            Logger.info("Staged '{0}' to git.".format(self.target))
 
         # 2-4. Execute 'commit' command
 
-        msg = "This commit was written by PSDwatcher\n\n" \
-               "TARGET FILE: '{0}'\n".format(self.target) \
-               "  FILE HASH: '{1}'\n".format(new_file_hash) \
-               "MODIFIED AT: '{2}'\n".format(self.strmtime(new_modified_time))
+        msg = "This commit was written by PSDwatcher\n\n"
+        msg += "TARGET FILE: '{0}'\n".format(self.target)
+        msg += "  FILE HASH: '{1}'\n".format(new_file_hash)
+        msg += "MODIFIED AT: '{2}'\n".format(self.strmtime(new_modified_time))
 
         # ==== UNDER DEVELOPEMNT ====
         # git.commit(msg, author= \
@@ -114,7 +117,7 @@ class ModificationWatcher(object):
 
     def get_sha224_hash(self, file):
 
-        with open(file,"rb") as fp:
+        with open(file, "rb") as fp:
             return sha224(fp.read()).hexdigest()
 
     def to_datetime(self, mtime):
@@ -125,5 +128,3 @@ class ModificationWatcher(object):
 
         dt = self.to_datetime(mtime)
         return dt.strftime("%Y-%m-%d %H:%M:%S")
-
-
