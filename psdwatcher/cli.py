@@ -1,7 +1,6 @@
 #!/usr/bin/env python
-#coding: utf-8
+# coding: utf-8
 
-import sys
 import argparse
 
 from psdwatcher import __version__
@@ -9,26 +8,24 @@ from psdwatcher import __version__
 parser = argparse.ArgumentParser(
     prog="psdwatcher",
     version=__version__,
-    description= \
-        "PSDwatcher - watching psd, and commit automatically."
+    description="PSDwatcher - watching psd, and commit automatically."
 )
 
 parser.add_argument(
     "--traceback",
     action="store_true",
     dest="traceback",
-    help= \
-        "When PSDwatcher raises error, " \
-        "print only error message. " \
-        "But use this argument, " \
-        "you can show traceback of error."
+    help="When PSDwatcher raises error, "
+         "print only error message. "
+         "But use this argument, "
+         "you can show traceback of error."
 )
 
 parser.add_argument(
     "--dev",
     action="store_true",
     dest="dev",
-    help= "Chnage development mode"
+    help="Chnage development mode"
 )
 
 subparser = parser.add_subparsers(
@@ -85,6 +82,3 @@ parser_list = subparser.add_parser(
     description=parser_list_help,
     help=parser_list_help
 )
-
-
-
