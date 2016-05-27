@@ -50,8 +50,8 @@ class ModificationWatcher(object):
 
         # 1-2. Compare variables.
 
-        if self.target_file_hash != new_file_hash \
-           and self.target_modified_time != new_modified_time:
+        if self.target_file_hash != new_file_hash and \
+                self.target_modified_time != new_modified_time:
 
             Logger.info("Catch the file modify!")
 
